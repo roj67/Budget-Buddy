@@ -12,6 +12,7 @@ export const Colors = {
   WHITE: '#FFFFFF',
   BLACK: '#000000',
   GRAY: '#758694',
+  PURPLE: '#6347EB',
   light: {
     text: '#11181C',
     background: '#fff',

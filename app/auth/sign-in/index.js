@@ -57,6 +57,7 @@ export default function SignIn() {
           borderRadius: 12
         }}></TextInput>
         <TouchableOpacity 
+        onPress={() => router.replace('/overview')}
             style={{
                 width: '100%',
                 backgroundColor: Colors.BLACK,
