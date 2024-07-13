@@ -30,9 +30,10 @@ export default function Login() {
             }}>Manage Your Finances with Ease</Text>
             <Text style={{
                 fontFamily: 'dm-sans',
-                fontSize: 15,
+                fontSize: 14,
                 textAlign: 'center',
-                marginTop: 10
+                marginTop: 8,
+                padding: 10
             }}>Whether you're planning for a major purchase, trying to save more each month, or simply want to keep track of your spending, our app provides the tools and insights you need to succeed.</Text>
         </View>
         <View style={{

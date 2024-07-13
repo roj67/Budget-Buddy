@@ -1,11 +1,37 @@
-import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native'
-import React from 'react'
-import { useRouter } from 'expo-router'
+import { View, Text, TouchableOpacity, TextInput, Image, ToastAndroid } from 'react-native'
+import React, { useState } from 'react'
+import { useNavigation, useRouter } from 'expo-router'
 import { Colors } from './../../../constants/Colors'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../../configs/firebaseConfig';
 
 export default function SignIn() {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
   const router = useRouter();
+  const navigation = useNavigation();
+
+  const loginUser = () => {
+    if(!email || !password){
+      ToastAndroid.show("Please enter correct credentials!", ToastAndroid.LONG);
+      return
+    }
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(user)
+      navigation.reset({
+        index: 0,
+        routes: [{name: '(tabs)'}]
+      });
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      ToastAndroid.show(errorMessage, ToastAndroid.LONG);
+    });
+  }
 
   return (
     <View style={{
@@ -20,17 +46,20 @@ export default function SignIn() {
         <Text style={{
           fontFamily: 'dm-sans-bold',
           fontSize: 35,
-          marginTop: 10
+          marginTop: 10,
+          color: Colors.TEXT_COLOR
         }}>Welcome Back</Text>
           <Text style={{
             fontFamily: 'dm-sans-semi-bold',
             fontSize: 25,
-            marginTop: 10
+            marginTop: 10,
+            color: Colors.GRAY
           }}>Let's Sign You In</Text>
         <Text style={{
           fontFamily: 'dm-sans-medium',
           fontSize: 20,
-          marginTop: 10
+          marginTop: 10,
+          color: Colors.FRENCH_GRAY
         }}>Continue where you had left</Text>
         <Text style={{
           fontFamily: 'dm-sans-medium',
@@ -43,7 +72,8 @@ export default function SignIn() {
           paddingHorizontal: 20,
           borderWidth: 1,
           borderRadius: 12
-        }}></TextInput>
+        }}
+        onChangeText={(value) => setEmail(value)}></TextInput>
         <Text style={{
           fontFamily: 'dm-sans-medium',
           fontSize: 18,
@@ -55,9 +85,11 @@ export default function SignIn() {
           paddingHorizontal: 20,
           borderWidth: 1,
           borderRadius: 12
-        }}></TextInput>
+        }}
+        onChangeText={(value) => setPassword(value)}
+        secureTextEntry={true}></TextInput>
         <TouchableOpacity 
-        onPress={() => router.replace('/overview')}
+        onPress={loginUser}
             style={{
                 width: '100%',
                 backgroundColor: Colors.BLACK,
